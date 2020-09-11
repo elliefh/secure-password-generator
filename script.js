@@ -1,16 +1,7 @@
 // // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
-
-}
-
-// function that tracks users' password criteria
+// function that identifies user's password criteria and generates password based on user's password criteria
 function generatePassword() {
   var passwordLength = 0;
   var passwordCharacters = "";
@@ -21,20 +12,23 @@ function generatePassword() {
   var special = ["~","!","@","#","$","%","^","&","*","(",")","_","+","`","-","=","{","}","|","[","]","?","/","<",">",",",".","'"];
   var requestedTypes = [];
 
+  // get user ready to answer password criteria prompts 
   confirm("Are you ready to answer a series of prompts regarding your password criteria?");
   if (confirm) {
-    // prompt first password criteria: password length 
+    // prompt user's password length criteria  
     passwordLength = prompt("To ensure security, our minimum password length is 8 characters and the maximum length is 128 characters. Please specify your desired password length.")
-    // ensure user input for password length is numerical and within the 8 - 128 range  
+    // ensure user input for password length is numerical  
     if (isNaN(passwordLength)) {
       alert("Please input a number.");
     }
+    // ensure user input for password length is within the min. and max. range 
     else if (passwordLength > 129 || passwordLength < 8) {
       alert("Please input a number between 8 and 128.");
     }
+    // proceed to the next password criteria prompt if user input is appropriate 
     else {
       alert("You selected " + passwordLength + " for password length.");
-      // prompt second password criteria: password character types 
+      // prompt user's password character type criteria 
       passwordCharacters = prompt("We offer four unique character types: lowercase, uppercase, numeric and special characters. Please specify your desired character types. (Please select at least one character type.)").toLowerCase();
       // ensure user input for character type fits the listed character types 
       if ((passwordCharacters.includes("uppercase")) || 
@@ -42,6 +36,7 @@ function generatePassword() {
           (passwordCharacters.includes("numeric")) ||
           (passwordCharacters.includes("special"))) {
         alert("Your password is being generated!");
+        // update requestedTypes array to only reflect users' desired character types 
         if (passwordCharacters.includes("uppercase")) {
           requestedTypes = requestedTypes.concat(uppercase);
         }
@@ -54,14 +49,16 @@ function generatePassword() {
         if (passwordCharacters.includes("special")) {
           requestedTypes = requestedTypes.concat(special);
         }
+        // generate a new password based on users' desired password length and character types 
         for (let i = 0; i < passwordLength; i++) {
           var results = requestedTypes[Math.floor(Math.random()*requestedTypes.length)];
           newPassword.push(results);
         }
-        console.log(newPassword);
-        return newPassword.join("");
+        // display generated password onto the screen in string format 
+        var passwordText = document.querySelector("#password");
+        passwordText.value = newPassword.join("");
       }
-      
+      // stop proceeding if user input does not include any of the listed character types 
       else {
         alert("Please select at least one character type out of the four provided.");
       }
@@ -69,7 +66,3 @@ function generatePassword() {
     }
   }
 }
-
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
-
